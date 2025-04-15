@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { addMovie, deleteMovie, getMovies, rateMovie } from "../dataHandler";
+import { addMovie, deleteMovie, getMovies, rateMovie, updateMovie } from "../dataHandler";
 
 export default function MovieList() {
   const [movies, setMovies] = useState(getMovies());
   const [movieIdToRate, setMovieIdToRate] = useState();
   const [editedMovieRating, setEditedMovieRating] = useState(0);
+  const [movieIdToEdit, setMovieIdToEdit] = useState();
 
   const handleDelete = (id) => {
     setMovies(deleteMovie(id));
+    if (movieIdToEdit === id) setMovieIdToEdit(undefined);
+    if (movieIdToRate === id) setMovieIdToRate(undefined);
   };
 
   const handleAddMovie = () => {
@@ -31,15 +34,28 @@ export default function MovieList() {
     setMovieIdToRate(undefined);
   };
 
+  const handleSubmitEdit = (movie) => {
+    setMovies(updateMovie(movie));
+    setMovieIdToEdit(undefined);
+  }
+
   return (
     <>
       <button onClick={handleAddMovie}>Add movie</button>
       <ul>
         {movies.map((movie) => (
           <li key={movie.id}>
-            <p>
-              {movie.title} - {movie.description} - {movie.rating}
-            </p>
+            {movieIdToEdit === movie.id ? (
+              <MovieItemEdit movie={movie} onSubmit={handleSubmitEdit} />
+            ) : (
+              <>
+                <p>
+                  {movie.title} - {movie.description} - {movie.rating}
+                </p>
+                <button onClick={() => setMovieIdToEdit(movie.id)}>Edit</button>
+              </>
+            )}
+
             {movieIdToRate === movie.id ? (
               <>
                 <input
@@ -58,6 +74,30 @@ export default function MovieList() {
           </li>
         ))}
       </ul>
+    </>
+  );
+}
+
+function MovieItemEdit(props) {
+  const [title, setTitle] = useState(props.movie.title);
+  const [description, setDescription] = useState(props.movie.description);
+
+  const handleSubmit = () => props.onSubmit({
+    ...props.movie,
+    title,
+    description
+  });
+
+  return (
+    <>
+      <label>Title</label>
+      <input value={title} onChange={(e) => setTitle(e.target.value)} />
+      <label>Description</label>
+      <input
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+      <button onClick={handleSubmit}>Submit edit</button>
     </>
   );
 }

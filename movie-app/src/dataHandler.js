@@ -35,3 +35,15 @@ export function rateMovie(id, rating) {
   });
   return movies;
 }
+
+export function updateMovie(updatedMovie) {
+  movies = movies.map((movie) => {
+    if (movie.id != updatedMovie.id) return movie;
+    return {
+      ...movie,
+      ...updatedMovie,
+    };
+  });
+
+  return movies;
+}
