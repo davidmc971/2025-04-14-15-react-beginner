@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { addMovie, deleteMovie, getMovies, rateMovie, updateMovie } from "../dataHandler";
+import {
+  addMovie,
+  deleteMovie,
+  getMovies,
+  rateMovie,
+  updateMovie,
+} from "../dataHandler";
+import MovieItemElement from "./MovieItemElement";
+import MovieItemEdit from "./MovieItemEdit";
 
 export default function MovieList() {
   const [movies, setMovies] = useState(getMovies());
@@ -37,7 +45,7 @@ export default function MovieList() {
   const handleSubmitEdit = (movie) => {
     setMovies(updateMovie(movie));
     setMovieIdToEdit(undefined);
-  }
+  };
 
   return (
     <>
@@ -49,9 +57,7 @@ export default function MovieList() {
               <MovieItemEdit movie={movie} onSubmit={handleSubmitEdit} />
             ) : (
               <>
-                <p>
-                  {movie.title} - {movie.description} - {movie.rating}
-                </p>
+                <MovieItemElement movie={movie} />
                 <button onClick={() => setMovieIdToEdit(movie.id)}>Edit</button>
               </>
             )}
@@ -74,32 +80,6 @@ export default function MovieList() {
           </li>
         ))}
       </ul>
-    </>
-  );
-}
-
-// For secure typing of props, either rely on TypeScript, on TSDoc or on PropTypes library
-
-function MovieItemEdit(props) {
-  const [title, setTitle] = useState(props.movie.title);
-  const [description, setDescription] = useState(props.movie.description);
-
-  const handleSubmit = () => props.onSubmit({
-    ...props.movie,
-    title,
-    description
-  });
-
-  return (
-    <>
-      <label>Title</label>
-      <input value={title} onChange={(e) => setTitle(e.target.value)} />
-      <label>Description</label>
-      <input
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <button onClick={handleSubmit}>Submit edit</button>
     </>
   );
 }
