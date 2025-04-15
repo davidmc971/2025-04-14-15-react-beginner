@@ -3,7 +3,7 @@ import { addMovie, getMovies } from "../dataHandler";
 import MovieItemElement from "./MovieItemElement";
 import MovieItemEdit from "./MovieItemEdit";
 
-export default function MovieList() {
+export default function MovieList({ onlyShowFavorites = false }) {
   const [movies, setMovies] = useState(getMovies());
 
   const handleAddMovie = () => {
@@ -18,15 +18,20 @@ export default function MovieList() {
 
   return (
     <>
-      <button onClick={handleAddMovie}>Add movie</button>
+      {!onlyShowFavorites && (
+        <button onClick={handleAddMovie}>Add movie</button>
+      )}
+
       <ul>
-        {movies.map((movie) => (
-          <MovieItemElement
-            key={movie.id}
-            setMovies={setMovies}
-            movie={movie}
-          />
-        ))}
+        {movies
+          .filter((m) => (onlyShowFavorites ? m.favorite : true))
+          .map((movie) => (
+            <MovieItemElement
+              key={movie.id}
+              setMovies={setMovies}
+              movie={movie}
+            />
+          ))}
       </ul>
     </>
   );
