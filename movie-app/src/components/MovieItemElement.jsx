@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { deleteMovie, rateMovie, updateMovie } from "../dataHandler";
+import {
+  deleteMovie,
+  rateMovie,
+  toggleFavoriteById,
+  updateMovie,
+} from "../dataHandler";
 import MovieItemEdit from "./MovieItemEdit";
 
 export default function MovieItemElement({ movie, setMovies }) {
@@ -7,7 +12,6 @@ export default function MovieItemElement({ movie, setMovies }) {
   const [isEditingRating, setIsEditingRating] = useState(false);
 
   const [editedMovieRating, setEditedMovieRating] = useState(movie.rating);
-
 
   const handleSubmitEdit = (movie) => {
     setMovies(updateMovie(movie));
@@ -21,6 +25,10 @@ export default function MovieItemElement({ movie, setMovies }) {
 
   const handleDelete = () => {
     setMovies(deleteMovie(movie.id));
+  };
+
+  const handleFavorite = () => {
+    setMovies(toggleFavoriteById(movie.id));
   };
 
   return (
@@ -49,6 +57,10 @@ export default function MovieItemElement({ movie, setMovies }) {
       ) : (
         <button onClick={() => setIsEditingRating(true)}>Rate</button>
       )}
+
+      <button onClick={() => handleFavorite()}>
+        {movie.favorite ? "Unfavorite" : "Favorite"}
+      </button>
 
       <button onClick={() => handleDelete()}>Delete</button>
     </li>
