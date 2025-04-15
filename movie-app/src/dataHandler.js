@@ -6,6 +6,8 @@ const initialMovies = [
   { id: 4, title: "Inception", description: "A cool movie!", rating: 5.0 },
 ];
 
+let nextMovieId = 5;
+
 let movies = initialMovies.slice();
 
 export function getMovies() {
@@ -13,6 +15,12 @@ export function getMovies() {
 }
 
 export function deleteMovie(id) {
-  movies = movies.filter(m => m.id != id);
+  movies = movies.filter((m) => m.id != id);
+  return movies;
+}
+
+/** @param { title: string, description: string, rating: number } movie */
+export function addMovie(movie) {
+  movies = [...movies, { ...movie, id: nextMovieId++ }];
   return movies;
 }
