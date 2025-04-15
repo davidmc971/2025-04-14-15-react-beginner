@@ -1,0 +1,17 @@
+@keyframes tilt-animation {
+  from {
+    rotate: -45deg;
+  }
+  to {
+    rotate: 45deg;
+  }
+}
+
+.head {
+  color: aqua;
+  animation-name: tilt-animation;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+}
