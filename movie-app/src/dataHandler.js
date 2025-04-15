@@ -24,3 +24,14 @@ export function addMovie(movie) {
   movies = [...movies, { ...movie, id: nextMovieId++ }];
   return movies;
 }
+
+export function rateMovie(id, rating) {
+  movies = movies.map((movie) => {
+    if (movie.id != id) return movie;
+    return {
+      ...movie,
+      rating,
+    };
+  });
+  return movies;
+}
