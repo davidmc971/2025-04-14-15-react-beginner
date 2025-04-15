@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { addMovie, getMovies } from "../dataHandler";
+import { addMovie, getMovies, resetMovies } from "../dataHandler";
 import MovieItemElement from "./MovieItemElement";
 import MovieItemEdit from "./MovieItemEdit";
 
@@ -33,6 +33,8 @@ export default function MovieList({ onlyShowFavorites = false }) {
             />
           ))}
       </ul>
+
+      <button onClick={() => setMovies(resetMovies())}>Reset movies</button>
     </>
   );
 }

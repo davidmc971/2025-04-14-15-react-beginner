@@ -37,8 +37,26 @@ const initialMovies = [
 ];
 
 let nextMovieId = 5;
+let movies;
+initMovies();
 
-let movies = initialMovies.slice();
+export function resetMovies() {
+  movies = initialMovies.slice();
+  updateLocalStorage();
+  return movies;
+}
+function initMovies() {
+  const localStorageMovies = localStorage.getItem("movies");
+  if (localStorageMovies != null) {
+    movies = JSON.parse(localStorageMovies);
+    return;
+  }
+  resetMovies();
+}
+
+function updateLocalStorage() {
+  localStorage.setItem("movies", JSON.stringify(movies));
+}
 
 export function getMovies() {
   return movies;
@@ -46,12 +64,14 @@ export function getMovies() {
 
 export function deleteMovie(id) {
   movies = movies.filter((m) => m.id != id);
+  updateLocalStorage();
   return movies;
 }
 
 /** @param { title: string, description: string, rating: number } movie */
 export function addMovie(movie) {
   movies = [...movies, { ...movie, id: nextMovieId++ }];
+  updateLocalStorage();
   return movies;
 }
 
@@ -63,6 +83,7 @@ export function rateMovie(id, rating) {
       rating,
     };
   });
+  updateLocalStorage();
   return movies;
 }
 
@@ -74,7 +95,7 @@ export function updateMovie(updatedMovie) {
       ...updatedMovie,
     };
   });
-
+  updateLocalStorage();
   return movies;
 }
 
@@ -86,6 +107,6 @@ export function toggleFavoriteById(id) {
       favorite: !movie.favorite,
     };
   });
-
+  updateLocalStorage();
   return movies;
 }
