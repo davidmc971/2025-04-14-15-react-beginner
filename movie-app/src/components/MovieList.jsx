@@ -78,6 +78,8 @@ export default function MovieList() {
   );
 }
 
+// For secure typing of props, either rely on TypeScript, on TSDoc or on PropTypes library
+
 function MovieItemEdit(props) {
   const [title, setTitle] = useState(props.movie.title);
   const [description, setDescription] = useState(props.movie.description);
